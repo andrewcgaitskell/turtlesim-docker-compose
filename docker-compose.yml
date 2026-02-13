@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  ros2-turtlesim:
+    build: .
+    container_name: turtlesim_container
+    network_mode: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - ROS_DOMAIN_ID=0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./ros2_ws:/ros2_ws
+    stdin_open: true
+    tty: true
+    # entrypoint.sh will handle starting turtlesim + teleop
