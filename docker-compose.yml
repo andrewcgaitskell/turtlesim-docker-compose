@@ -1,41 +1,41 @@
-version: '3.8'
-
 services:
   turtlesim:
-    build: .
+    build:
+      context: ./docker/turtlesim
+      dockerfile: Dockerfile
     container_name: turtlesim_node
     network_mode: host
     environment:
       - DISPLAY=${DISPLAY}
-      - ROS_DOMAIN_ID=0
+      - ROS_DOMAIN_ID=42
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./ros2_ws:/ros2_ws
-    command: ros2 run turtlesim turtlesim_node
 
   teleop:
-    build: .
+    build:
+      context: ./docker/teleop
+      dockerfile: Dockerfile
     container_name: turtle_teleop
     network_mode: host
     environment:
-      - ROS_DOMAIN_ID=0
+      - ROS_DOMAIN_ID=42
     volumes:
       - ./ros2_ws:/ros2_ws
     stdin_open: true
     tty: true
-    command: bash -c "sleep 3 && ros2 run turtlesim turtle_teleop_key"
     depends_on:
       - turtlesim
 
   explorer:
-    build: .
+    build:
+      context: ./docker/explorer
+      dockerfile: Dockerfile
     container_name: explorer
     network_mode: host
     environment:
-      - ROS_DOMAIN_ID=0
+      - ROS_DOMAIN_ID=42
     volumes:
       - ./ros2_ws:/ros2_ws
-    command: bash -c "sleep 5 && tail -f /dev/null"
     depends_on:
       - turtlesim
-
