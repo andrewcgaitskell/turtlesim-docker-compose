@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   turtlesim:
     build: .
@@ -25,15 +27,15 @@ services:
     depends_on:
       - turtlesim
 
-  # Monitor container - you'll explore this!
-  monitor:
+  explorer:
     build: .
-    container_name: turtle_monitor
+    container_name: explorer
     network_mode: host
     environment:
       - ROS_DOMAIN_ID=0
     volumes:
       - ./ros2_ws:/ros2_ws
-    command: bash -c "sleep 5 && tail -f /dev/null"  # Keeps running
+    command: bash -c "sleep 5 && tail -f /dev/null"
     depends_on:
       - turtlesim
+
