@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
-  ros2-turtlesim:
+  turtlesim:
     build: .
-    container_name: turtlesim_container
+    container_name: turtlesim_node
     network_mode: host
     environment:
       - DISPLAY=${DISPLAY}
@@ -11,6 +9,31 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./ros2_ws:/ros2_ws
+    command: ros2 run turtlesim turtlesim_node
+
+  teleop:
+    build: .
+    container_name: turtle_teleop
+    network_mode: host
+    environment:
+      - ROS_DOMAIN_ID=0
+    volumes:
+      - ./ros2_ws:/ros2_ws
     stdin_open: true
     tty: true
-    # entrypoint.sh will handle starting turtlesim + teleop
+    command: bash -c "sleep 3 && ros2 run turtlesim turtle_teleop_key"
+    depends_on:
+      - turtlesim
+
+  # Monitor container - you'll explore this!
+  monitor:
+    build: .
+    container_name: turtle_monitor
+    network_mode: host
+    environment:
+      - ROS_DOMAIN_ID=0
+    volumes:
+      - ./ros2_ws:/ros2_ws
+    command: bash -c "sleep 5 && tail -f /dev/null"  # Keeps running
+    depends_on:
+      - turtlesim
