@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "🚀 Starting ROS2 Learning Environment..."
 xhost +local:docker 2>/dev/null
-docker compose up -d --build
+docker compose up -d
 echo ""
 echo "✅ Running! Three containers:"
 echo "   • turtlesim_node (the 'robot')"
